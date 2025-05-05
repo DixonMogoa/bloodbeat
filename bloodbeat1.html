@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeSaver - Blood Donation App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .blood-type {
+            position: relative;
+        }
+        .blood-type::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #e53e3e;
+            transform: translate(50%, -50%);
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .donor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-red-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-heartbeat text-3xl"></i>
+                    <h1 class="text-2xl font-bold">LifeSaver</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#" class="font-medium hover:text-red-200 transition" onclick="showTab('home')">Home</a>
+                    <a href="#" class="font-medium hover:text-red-200 transition" onclick="showTab('donate')">Donate</a>
+                    <a href="#" class="font-medium hover:text-red-200 transition" onclick="showTab('find')">Find Donors</a>
+                    <a href="#" class="font-medium hover:text-red-200 transition" onclick="showTab('about')">About</a>
+                </nav>
+                <button class="md:hidden text-2xl" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden bg-red-700 md:hidden">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#" class="py-2 font-medium hover:text-red-200 transition" onclick="showTab('home')">Home</a>
+                <a href="#" class="py-2 font-medium hover:text-red-200 transition" onclick="showTab('donate')">Donate</a>
+                <a href="#" class="py-2 font-medium hover:text-red-200 transition" onclick="showTab('find')">Find Donors</a>
+                <a href="#" class="py-2 font-medium hover:text-red-200 transition" onclick="showTab('about')">About</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Home Tab -->
+        <div id="home" class="tab-content active">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                <div class="md:flex">
+                    <div class="md:w-1/2 p-8">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Donate Blood, Save Lives</h2>
+                        <p class="text-gray-600 mb-6">Every blood donation can save up to 3 lives. Join our community of heroes who make a difference with just one hour of their time.</p>
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="showTab('donate')" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105">
+                                Become a Donor
+                            </button>
+                            <button onclick="showTab('find')" class="bg-white hover:bg-gray-100 text-red-600 font-bold py-3 px-6 border border-red-600 rounded-lg transition transform hover:scale-105">
+                                Find Donors
+                            </button>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 bg-red-50 flex items-center justify-center p-8">
+                        <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7ef0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Blood donation" class="rounded-lg shadow-md max-h-80">
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+                    <div class="text-red-500 text-4xl mb-4">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Why Donate?</h3>
+                    <p class="text-gray-600">Blood is needed every two seconds. Your donation helps patients undergoing surgery, cancer treatment, trauma care, and more.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+                    <div class="text-red-500 text-4xl mb-4">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Eligibility</h3>
+                    <p class="text-gray-600">Most people can donate if they're in good health, weigh at least 110 lbs, and are at least 17 years old (16 with parental consent).</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+                    <div class="text-red-500 text-4xl mb-4">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">The Process</h3>
+                    <p class="text-gray-600">The entire process takes about an hour. Actual donation time is only 8-10 minutes. You'll get snacks and drinks afterward!</p>
+                </div>
+            </div>
+
+            <div class="bg-red-600 text-white rounded-xl p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-4">Blood Type Facts</h2>
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                        <h3 class="font-bold">O+</h3>
+                        <p class="text-sm opacity-90">Most common blood type (37%)</p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                        <h3 class="font-bold">O-</h3>
+                        <p class="text-sm opacity-90">Universal donor (7%)</p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                        <h3 class="font-bold">A+</h3>
+                        <p class="text-sm opacity-90">Second most common (36%)</p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                        <h3 class="font-bold">A-</h3>
+                        <p class="text-sm opacity-90">Can donate to A and AB (6%)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donate Tab -->
+        <div id="donate" class="tab-content">
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Become a Blood Donor</h2>
+                    
+                    <form id="donorForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                                <input type="text" id="firstName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" required>
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                                <input type="text" id="lastName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" required>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" required>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                                <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" required>
+                            </div>
+                            <div>
+                                <label for="dob" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                                <input type="date" id="dob" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" required>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="bloodType" class="block text-sm font-medium text-gray-700 mb-1">Blood Type</label>
+                                <select id="bloodType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" required>
+                                    <option value="">Select your blood type</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                                <select id="gender" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" required>
+                                    <option value="">Select gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                <input type="text" id="city" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" required>
+                            </div>
+                            <div>
+                                <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                                <input type="text" id="state" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" required>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="eligibility" class="rounded text-red-600 focus:ring-red-500" required>
+                                <span class="ml-2 text-sm text-gray-700">I confirm that I meet all eligibility requirements to donate blood</span>
+                            </label>
+                        </div>
+                        
+                        <div>
+                            <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition transform hover:scale-105">
+                                Register as Donor
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="donorSuccess" class="hidden max-w-3xl mx-auto bg-green-50 border border-green-200 rounded-xl p-8 text-center">
+                <div class="text-green-500 text-6xl mb-4">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-green-800 mb-2">Thank You for Registering!</h2>
+                <p class="text-green-600 mb-6">You're now part of our lifesaving community. We'll contact you soon with donation opportunities.</p>
+                <button onclick="showTab('home')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+
+        <!-- Find Donors Tab -->
+        <div id="find" class="tab-content">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Find Blood Donors</h2>
+                
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <div class="grid md:grid-cols-4 gap-4">
+                        <div>
+                            <label for="searchBloodType" class="block text-sm font-medium text-gray-700 mb-1">Blood Type</label>
+                            <select id="searchBloodType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                <option value="">All Types</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="searchCity" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                            <input type="text" id="searchCity" placeholder="Enter city" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                        </div>
+                        <div>
+                            <label for="searchState" class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                            <input type="text" id="searchState" placeholder="Enter state" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="searchDonors()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                                Search Donors
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="donorResults" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Sample donor cards (will be populated by JavaScript) -->
+                    <div class="donor-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800">John D.</h3>
+                                    <p class="text-gray-600">New York, NY</p>
+                                </div>
+                                <span class="blood-type bg-red-100 text-red-800 font-bold px-3 py-1 rounded-full text-sm">O+</span>
+                            </div>
+                            <div class="flex items-center text-gray-600 mb-4">
+                                <i class="fas fa-venus-mars mr-2"></i>
+                                <span>Male</span>
+                            </div>
+                            <div class="flex items-center text-gray-600 mb-4">
+                                <i class="fas fa-phone mr-2"></i>
+                                <span>***-***-1234</span>
+                            </div>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>Last donated: 3 months ago</span>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-3">
+                            <button class="text-red-600 font-medium hover:text-red-800 transition">
+                                <i class="fas fa-envelope mr-2"></i> Contact Donor
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="donor-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800">Sarah M.</h3>
+                                    <p class="text-gray-600">Los Angeles, CA</p>
+                                </div>
+                                <span class="blood-type bg-red-100 text-red-800 font-bold px-3 py-1 rounded-full text-sm">A-</span>
+                            </div>
+                            <div class="flex items-center text-gray-600 mb-4">
+                                <i class="fas fa-venus-mars mr-2"></i>
+                                <span>Female</span>
+                            </div>
+                            <div class="flex items-center text-gray-600 mb-4">
+                                <i class="fas fa-phone mr-2"></i>
+                                <span>***-***-5678</span>
+                            </div>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>Last donated: 1 month ago</span>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-3">
+                            <button class="text-red-600 font-medium hover:text-red-800 transition">
+                                <i class="fas fa-envelope mr-2"></i> Contact Donor
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="donor-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800">Michael T.</h3>
+                                    <p class="text-gray-600">Chicago, IL</p>
+                                </div>
+                                <span class="blood-type bg-red-100 text-red-800 font-bold px-3 py-1 rounded-full text-sm">B+</span>
+                            </div>
+                            <div class="flex items-center text-gray-600 mb-4">
+                                <i class="fas fa-venus-mars mr-2"></i>
+                                <span>Male</span>
+                            </div>
+                            <div class="flex items-center text-gray-600 mb-4">
+                                <i class="fas fa-phone mr-2"></i>
+                                <span>***-***-9012</span>
+                            </div>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>Last donated: 2 weeks ago</span>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-3">
+                            <button class="text-red-600 font-medium hover:text-red-800 transition">
+                                <i class="fas fa-envelope mr-2"></i> Contact Donor
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Tab -->
+        <div id="about" class="tab-content">
+            <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">About LifeSaver</h2>
+                    
+                    <div class="prose max-w-none">
+                        <p class="text-gray-600 mb-4">
+                            LifeSaver is a community-driven blood donation platform connecting donors with those in need. 
+                            Our mission is to make blood donation simple, accessible, and rewarding for everyone.
+                        </p>
+                        
+                        <h3 class="text-xl font-bold text-gray-800 mt-6 mb-3">How It Works</h3>
+                        <div class="grid md:grid-cols-3 gap-6 mb-6">
+                            <div class="bg-red-50 p-4 rounded-lg">
+                                <div class="text-red-600 text-2xl mb-2">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <h4 class="font-bold mb-1">1. Register</h4>
+                                <p class="text-sm text-gray-600">Sign up as a donor in just a few minutes</p>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-lg">
+                                <div class="text-red-600 text-2xl mb-2">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <h4 class="font-bold mb-1">2. Find</h4>
+                                <p class="text-sm text-gray-600">Search for donors when blood is needed</p>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-lg">
+                                <div class="text-red-600 text-2xl mb-2">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <h4 class="font-bold mb-1">3. Save Lives</h4>
+                                <p class="text-sm text-gray-600">Your donation makes a real difference</p>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-gray-800 mt-6 mb-3">Frequently Asked Questions</h3>
+                        <div class="space-y-4">
+                            <div class="border-b border-gray-200 pb-4">
+                                <h4 class="font-bold text-gray-800">Who can donate blood?</h4>
+                                <p class="text-gray-600 mt-1">
+                                    Most people in good health, weighing at least 110 pounds, and at least 17 years old (16 with parental consent) can donate. 
+                                    There are some medical conditions and medications that may affect eligibility.
+                                </p>
+                            </div>
+                            <div class="border-b border-gray-200 pb-4">
+                                <h4 class="font-bold text-gray-800">How often can I donate?</h4>
+                                <p class="text-gray-600 mt-1">
+                                    You can donate whole blood every 56 days (8 weeks). Platelet donors can donate more frequently - up to 24 times per year.
+                                </p>
+                            </div>
+                            <div class="border-b border-gray-200 pb-4">
+                                <h4 class="font-bold text-gray-800">Is it safe to donate blood?</h4>
+                                <p class="text-gray-600 mt-1">
+                                    Yes, donating blood is safe. New, sterile equipment is used for each donor, so there's no risk of contracting a bloodborne infection.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">How long does it take?</h4>
+                                <p class="text-gray-600 mt-1">
+                                    The entire process takes about an hour. The actual donation takes only 8-10 minutes. 
+                                    You'll spend about 10 minutes completing the health history questionnaire and about 15 minutes in the refreshment area after donating.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">LifeSaver</h3>
+                    <p class="text-gray-400">Connecting blood donors with those in need since 2023.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition" onclick="showTab('home')">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition" onclick="showTab('donate')">Donate Blood</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition" onclick="showTab('find')">Find Donors</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition" onclick="showTab('about')">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i> 123 Blood Drive, Health City</li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-2"></i> (123) 456-7890</li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-2"></i> info@lifesaver.org</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 LifeSaver. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab functionality
+        function showTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Close mobile menu if open
+            document.getElementById('mobileMenu').classList.add('hidden');
+        }
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Form submission
+        document.getElementById('donorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // In a real app, you would send this data to a server
+            // For this demo, we'll just show a success message
+            document.getElementById('donorForm').style.display = 'none';
+            document.getElementById('donorSuccess').style.display = 'block';
+        });
+        
+        // Search donors function
+        function searchDonors() {
+            const bloodType = document.getElementById('searchBloodType').value;
+            const city = document.getElementById('searchCity').value;
+            const state = document.getElementById('searchState').value;
+            
+            // In a real app, you would fetch matching donors from a database
+            // For this demo, we'll just show an alert
+            alert(`Searching for donors with blood type ${bloodType || 'any'} in ${city || 'any city'}, ${state || 'any state'}`);
+        }
+        
+        // Initialize with home tab
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('home');
+        });
+    </script>
+</body>
+</html>
